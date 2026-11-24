@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>نجوم الآداب ⭐ لعبة الأطفال</title>
+<style>
+  :root{
+    --bg1:#ffe8f0; --bg2:#e0f4ff; --card:#ffffff; --ink:#3a2e5c;
+    --pink:#ff6b9d; --blue:#4dabf7; --green:#51cf66; --yellow:#ffd43b; --purple:#9775fa;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;height:100%;}
+  body{
+    font-family:"Segoe UI",Tahoma,Arial,sans-serif;
+    background:linear-gradient(160deg,var(--bg1),var(--bg2));
+    color:var(--ink);
+    min-height:100vh;
+    touch-action:manipulation;
+    overflow-x:hidden;
+  }
+  .screen{display:none; min-height:100vh; padding:18px 14px 40px; max-width:560px; margin:0 auto;}
+  .screen.active{display:block;}
+  .center-col{display:flex; flex-direction:column; align-items:center; gap:14px;}
+  h1{font-size:2.1rem; margin:8px 0 2px; text-align:center;}
+  .sub{font-size:1.05rem; opacity:.75; text-align:center; margin:0 0 6px;}
+  .logo{font-size:4rem; line-height:1; animation:bob 2.2s ease-in-out infinite;}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  .btn{
+    border:none; cursor:pointer; font-family:inherit; color:#fff;
+    font-size:1.35rem; font-weight:700; border-radius:26px;
+    padding:16px 26px; width:100%; max-width:380px;
+    box-shadow:0 5px 0 rgba(0,0,0,.14);
+    transition:transform .08s ease;
+    display:flex; align-items:center; justify-content:center; gap:10px;
+  }
+  .btn:active{transform:scale(.96);}
+  .btn .em{font-size:1.8rem;}
+  .btn-pink{background:var(--pink);} .btn-blue{background:var(--blue);}
+  .btn-green{background:var(--green);} .btn-purple{background:var(--purple);}
+  .btn-yellow{background:#f0a202;}
+  .topbar{display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:10px;}
+  .stars-pill{
+    background:#fff; border-radius:999px; padding:8px 16px; font-size:1.15rem; font-weight:700;
+    box-shadow:0 2px 6px rgba(0,0,0,.08);
+  }
+  .icon-btn{
+    background:#fff; border:none; border-radius:999px; width:48px; height:48px;
+    font-size:1.3rem; cursor:pointer; box-shadow:0 2px 6px rgba(0,0,0,.08);
+  }
+  .stage-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px; width:100%; max-width:480px;}
+  .stage-card{
+    background:var(--card); border:none; border-radius:28px; padding:22px 10px;
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+    font-family:inherit; font-size:1.15rem; font-weight:700; color:var(--ink);
+    cursor:pointer; box-shadow:0 4px 0 rgba(0,0,0,.10); transition:transform .08s ease;
+    min-height:150px; position:relative;
+  }
+  .stage-card:active{transform:scale(.95);}
+  .stage-card .em{font-size:3.2rem;}
+  .stage-card .done-badge{
+    position:absolute; top:8px; left:8px; background:var(--green); color:#fff;
+    border-radius:999px; padding:3px 10px; font-size:.85rem;
+  }
+  .prompt{
+    background:#fff; border-radius:24px; padding:16px 20px; width:100%; max-width:480px;
+    font-size:1.45rem; font-weight:700; text-align:center; box-shadow:0 3px 0 rgba(0,0,0,.08);
+  }
+  .prompt .em{font-size:2rem; display:block; margin-bottom:4px;}
+  .choices{display:grid; grid-template-columns:1fr 1fr; gap:14px; width:100%; max-width:480px;}
+  .choice{
+    background:var(--card); border:4px solid transparent; border-radius:26px; padding:18px 8px;
+    display:flex; flex-direction:column; align-items:center; gap:6px;
+    font-family:inherit; font-size:1.1rem; font-weight:700; color:var(--ink);
+    cursor:pointer; box-shadow:0 4px 0 rgba(0,0,0,.10); min-height:130px;
+    transition:transform .08s ease;
+  }
+  .choice:active{transform:scale(.95);}
+  .choice .em{font-size:2.8rem;}
+  .choice.hint{border-color:var(--yellow); animation:pulse 1s infinite;}
+  @keyframes pulse{0%,100%{box-shadow:0 4px 0 rgba(0,0,0,.10)}50%{box-shadow:0 0 0 8px rgba(255,212,59,.35)}}
+  .choice.good{background:#d3f9d8; border-color:var(--green);}
+  .choice.bad{background:#ffe3e3; border-color:#ff8787; animation:shake .35s;}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+  .progress-dots{display:flex; gap:6px; justify-content:center; margin:4px 0 10px;}
+  .dot{width:14px;height:14px;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 2px #d0c8e8;}
+  .dot.on{background:var(--yellow); box-shadow:inset 0 0 0 2px #f0a202;}
+  .praise{
+    font-size:1.5rem; font-weight:800; color:var(--pink); text-align:center; min-height:2rem;
+    animation:pop .3s ease;
+  }
+  @keyframes pop{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}
+  .big-emoji{font-size:6rem; animation:bob 1.6s ease-in-out infinite;}
+  .confetti-piece{
+    position:fixed; top:-20px; width:12px; height:18px; z-index:50; pointer-events:none;
+    animation:fall linear forwards;
+  }
+  @keyframes fall{to{transform:translateY(110vh) rotate(720deg); opacity:.7;}}
+  .footer-note{text-align:center; font-size:.85rem; opacity:.6; margin-top:24px;}
+  .trophy-stars{font-size:2.2rem; letter-spacing:6px; text-align:center;}
+</style>
+</head>
+<body>
+
+<!-- شاشة البداية: اختيار السن -->
+<div class="screen active center-col" id="scr-home">
+  <div class="logo">⭐</div>
+  <h1>نجوم الآداب</h1>
+  <p class="sub">لعبة حلوة بتعلّمك النضافة والصلاة والأدب الجميل</p>
+  <p class="sub" style="font-weight:700; opacity:1;">قولي الأول: عندك كام سنة؟</p>
+  <button class="btn btn-green" data-age="little"><span class="em">🐣</span> من ٣ لـ ٥ سنين</button>
+  <button class="btn btn-blue" data-age="mid"><span class="em">🐥</span> من ٦ لـ ٨ سنين</button>
+  <button class="btn btn-purple" data-age="big"><span class="em">🦅</span> من ٩ لـ ١٠ سنين</button>
+</div>
+
+<!-- خريطة المراحل -->
+<div class="screen" id="scr-map">
+  <div class="topbar">
+    <button class="icon-btn" id="btn-sound" title="الصوت">🔊</button>
+    <div class="stars-pill">⭐ <span id="stars-total">٠</span></div>
+    <button class="icon-btn" id="btn-home" title="تغيير السن">🔄</button>
+  </div>
+  <h1 style="font-size:1.7rem; text-align:center;">اختار مرحلة يا بطل!</h1>
+  <div class="stage-grid" id="stage-grid"></div>
+  <button class="btn btn-yellow" id="btn-final" style="margin:22px auto 0; display:none;"><span class="em">🏆</span> شهادة بطل الآداب</button>
+  <p class="footer-note">كل حاجة بتتسجل على جهازك بس، مفيش حسابات ولا إعلانات 💛</p>
+</div>
+
+<!-- شاشة اللعب -->
+<div class="screen" id="scr-game">
+  <div class="topbar">
+    <button class="icon-btn" id="btn-back">➡️</button>
+    <div class="stars-pill">⭐ <span id="stars-game">٠</span></div>
+    <div style="width:48px"></div>
+  </div>
+  <div class="progress-dots" id="dots"></div>
+  <div class="center-col">
+    <div class="prompt" id="prompt"></div>
+    <div class="choices" id="choices"></div>
+    <div class="praise" id="praise"></div>
+  </div>
+</div>
+
+<!-- نهاية مرحلة -->
+<div class="screen center-col" id="scr-done">
+  <div class="big-emoji" id="done-emoji">🎉</div>
+  <h1 id="done-title">برافو عليك!</h1>
+  <div class="trophy-stars" id="done-stars"></div>
+  <p class="sub" id="done-text"></p>
+  <button class="btn btn-green" id="btn-next-map"><span class="em">🗺️</span> ارجع للمراحل</button>
+</div>
+
+<!-- الشهادة النهائية -->
+<div class="screen center-col" id="scr-final">
+  <div class="big-emoji">🏆</div>
+  <h1>أنت بطل الآداب!</h1>
+  <div class="trophy-stars" id="final-stars"></div>
+  <p class="sub" id="final-text">خلّصت كل المراحل! بتغسل إيديك وسنانك، وبتتوضا وتصلي، وأدبك جميل مع كل الناس. ربنا يحبك ويخليك دايمًا بطل 💛</p>
+  <button class="btn btn-blue" id="btn-again"><span class="em">🔄</span> العب من الأول</button>
+</div>
+
+<script>
+"use strict";
+/* ============ إعدادات الصعوبة حسب السن ============ */
+const DIFF = {
+  little: { mannerOptions: 2, hints: true,  distractors: false, guided: true  },
+  mid:    { mannerOptions: 3, hints: true,  distractors: false, guided: false },
+  big:    { mannerOptions: 3, hints: false, distractors: true,  guided: false }
+};
+
+/* ============ محتوى المراحل ============ */
+const STAGES = {
+  hands: {
+    title: "أغسل إيدي 🧼", emoji: "🧼", done: "إيديك بقت نضيفة وريحتها حلوة! الجراثيم جريت منك 🏃‍♂️💨",
+    steps: [
+      { em: "💧", tx: "بلّ إيديك بالمية" },
+      { em: "🧼", tx: "حط الصابون" },
+      { em: "👐", tx: "ادعك كفوفك وصوابعك كويس" },
+      { em: "🚿", tx: "اغسل الصابون بالمية" },
+      { em: "🤲", tx: "نشّف إيديك بالفوطة" },
+      { em: "✨", tx: "إيدك نضيفة!" }
+    ],
+    distractors: [
+      { em: "🍫", tx: "كُل شوكولاتة" },
+      { em: "📺", tx: "اتفرج على التلفزيون" }
+    ]
+  },
+  teeth: {
+    title: "أغسل سناني 🦷", emoji: "🦷", done: "سنانك لامعة زي النجوم! ضحكتك بقت أحلى 😁✨",
+    steps: [
+      { em: "🪥", tx: "حط المعجون على الفرشاة" },
+      { em: "😁", tx: "اغسل سنانك من فوق" },
+      { em: "😬", tx: "اغسل سنانك من تحت" },
+      { em: "👅", tx: "اغسل لسانك برفق" },
+      { em: "💦", tx: "اشطف بقك بالمية" },
+      { em: "✨", tx: "سنانك لامعة!" }
+    ],
+    distractors: [
+      { em: "🍭", tx: "كُل حلوى قبل النوم" },
+      { em: "🥤", tx: "اشرب صودا" }
+    ]
+  },
+  wudu: {
+    title: "الوضوء والصلاة 🕌", emoji: "🕌", done: "وضوءك صح وصلاتك حلوة! ربنا بيحب المتوضيين 🌙",
+    steps: [
+      { em: "👐", tx: "اغسل إيديك ٣ مرات" },
+      { em: "👄", tx: "تمضمض بالمية" },
+      { em: "👃", tx: "استنشق بالمية" },
+      { em: "😊", tx: "اغسل وشك" },
+      { em: "💪", tx: "اغسل دراعيك لحد الكوع" },
+      { em: "🙆", tx: "امسح على راسك وودانك" },
+      { em: "🦶", tx: "اغسل رجليك لحد الكعبين" },
+      { em: "🧍", tx: "قوم للصلاة - قيام" },
+      { em: "🙇", tx: "اركع - ركوع" },
+      { em: "🧎", tx: "اسجد - سجود" },
+      { em: "☝️", tx: "اقعد للتشهد" },
+      { em: "🤲", tx: "سلّم وادعي ربنا" }
+    ],
+    distractors: [
+      { em: "🏃", tx: "اجري في الصلاة" },
+      { em: "🗣️", tx: "اتكلم بصوت عالي في المسجد" }
+    ]
+  },
+  manners: {
+    title: "الأدب الجميل 💛", emoji: "💛", done: "أدبك جميل أوي! كل الناس بتحب المهذبين زيك 🌷"
+  }
+};
+
+const MANNERS = [
+  { q: "ماما ادّتلك هدية حلوة 🎁", a: ["شكرًا يا أحلى ماما 🌟", "مش عاجباني خالص 😒", "خدتها ومشيت من غير كلام 😶"] },
+  { q: "صاحبك وقع على الأرض في المدرسة 😟", a: ["أساعده أقوم وأطمن عليه 🤝", "أضحك عليه 😂", "أسيبه وأمشي 🚶"] },
+  { q: "عايز عصير من بابا 🧃", a: ["ممكن عصير من فضلك يا بابا؟ 🙏", "هات العصير حالًا! 😠", "أخده من غير ما أقول 🤫"] },
+  { q: "خبطت حد بالغلط وانت بتجري 💥", a: ["أنا آسف جدًا 🌷", "مش مشكلتي 😶", "أجري وأهرب 🏃"] },
+  { q: "شفت مدرّستك الصبح في الشارع ☀️", a: ["صباح الخير يا مسّ 🌸", "أبص الناحية التانية 🙄", "أقولها سلام بعدين 😴"] },
+  { q: "خلّصت أكل وكنت جعان 🍽️", a: ["الحمد لله شبعت 🙏", "أرمي باقي الأكل 🗑️", "أقول الأكل وحش 😖"] }
+];
+
+const PRAISES = ["برافو! 🌟", "عاش يا بطل! 💪", "ممتاز! 🎉", "أحسنت! 👏", "رائع جدًا! ⭐", "شاطر أوي! 🏅"];
+const GENTLE = ["جرّب تاني يا بطل 💪", "قريب! فكر كمان شوية 🤔", "مش دي، جرّب تاني 🌈"];
+
+/* ============ الحالة ============ */
+let state = { age: null, stars: {}, done: {}, sound: true };
+try {
+  const s = JSON.parse(localStorage.getItem("nojoom-state") || "null");
+  if (s && s.stars) state = s;
+} catch (e) {}
+function save() { try { localStorage.setItem("nojoom-state", JSON.stringify(state)); } catch (e) {} }
+
+/* ============ الصوت (WebAudio من غير ملفات) ============ */
+let actx = null;
+function ac() {
+  if (!actx) { const AC = window.AudioContext || window.webkitAudioContext; actx = new AC(); }
+  if (actx.state === "suspended") actx.resume();
+  return actx;
+}
+function tone(freq, t0, dur, type, vol) {
+  if (!state.sound) return;
+  try {
+    const c = ac(), o = c.createOscillator(), g2 = c.createGain();
+    o.type = type || "sine"; o.frequency.value = freq;
+    g2.gain.setValueAtTime(0.0001, c.currentTime + t0);
+    g2.gain.exponentialRampToValueAtTime(vol || 0.18, c.currentTime + t0 + 0.02);
+    g2.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + t0 + dur);
+    o.connect(g2); g2.connect(c.destination);
+    o.start(c.currentTime + t0); o.stop(c.currentTime + t0 + dur + 0.05);
+  } catch (e) {}
+}
+const sndTap    = () => tone(600, 0, 0.08, "triangle", 0.10);
+const sndStar   = () => { tone(880,0,0.09,"triangle"); tone(1174,0.08,0.15,"triangle"); };
+const sndBad    = () => tone(196, 0, 0.25, "sine", 0.12);
+const sndWin    = () => { [523,587,659,784,880,1046].forEach((f,i)=>tone(f, i*0.11, 0.22, "sine")); tone(1318,0.7,0.5,"sine",0.14); };
+
+/* ============ مساعدات ============ */
+const $ = id => document.getElementById(id);
+function show(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  $(id).classList.add("active");
+  window.scrollTo(0,0);
+}
+function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+function arNum(n) { return String(n).replace(/\d/g, d => "٠١٢٣٤٥٦٧٨٩"[d]); }
+function totalStars() { return Object.values(state.stars).reduce((a, b) => a + b, 0); }
+function refreshStars() { $("stars-total").textContent = arNum(totalStars()); }
+function confetti(n) {
+  const colors = ["#ff6b9d","#4dabf7","#51cf66","#ffd43b","#9775fa","#ff922b"];
+  for (let i = 0; i < (n || 60); i++) {
+    const d = document.createElement("div");
+    d.className = "confetti-piece";
+    d.style.right = Math.random() * 100 + "vw";
+    d.style.background = colors[i % colors.length];
+    d.style.borderRadius = Math.random() > .5 ? "50%" : "3px";
+    d.style.animationDuration = (1.6 + Math.random() * 1.8) + "s";
+    d.style.animationDelay = (Math.random() * 0.5) + "s";
+    document.body.appendChild(d);
+    setTimeout(() => d.remove(), 4200);
+  }
+}
+
+/* ============ خريطة المراحل ============ */
+function renderMap() {
+  refreshStars();
+  const gr = $("stage-grid"); gr.innerHTML = "";
+  Object.keys(STAGES).forEach(key => {
+    const st = STAGES[key];
+    const b = document.createElement("button");
+    b.className = "stage-card";
+    b.innerHTML = (state.done[key] ? '<span class="done-badge">✔ خلصتها</span>' : "") +
+      '<span class="em">' + st.emoji + '</span><span>' + st.title + "</span>";
+    b.onclick = () => { sndTap(); startStage(key); };
+    gr.appendChild(b);
+  });
+  const allDone = Object.keys(STAGES).every(k => state.done[k]);
+  $("btn-final").style.display = allDone ? "flex" : "none";
+}
+
+/* ============ محرك لعبة الترتيب (نضافة / وضوء) ============ */
+let g = null;
+let m = null;
+function startStage(key) {
+  if (key === "manners") return startManners();
+  m = null;
+  const st = STAGES[key];
+  const d = DIFF[state.age];
+  g = { key, st, d, idx: 0, stars: 0, remaining: st.steps.map((s, i) => i) };
+  $("stars-game").textContent = "٠";
+  show("scr-game");
+  renderDots(st.steps.length, g.idx);
+  nextOrderRound();
+}
+function renderDots(n, on) {
+  const dd = $("dots"); dd.innerHTML = "";
+  for (let i = 0; i < n; i++) { const s = document.createElement("span"); s.className = "dot" + (i < on ? " on" : ""); dd.appendChild(s); }
+}
+function nextOrderRound() {
+  if (g.idx >= g.st.steps.length) return finishStage(g.key, g.stars);
+  renderDots(g.st.steps.length, g.idx);
+  const step = g.st.steps[g.idx];
+  $("praise").textContent = "";
+  const pr = $("prompt");
+  if (g.d.guided) {
+    pr.innerHTML = '<span class="em">' + step.em + "</span>دوس على: " + step.tx;
+  } else {
+    pr.innerHTML = '<span class="em">' + g.st.emoji + "</span>رتّب الخطوات! دلوقتي: <u>" + step.tx + "</u>";
+  }
+  let pool;
+  if (g.d.guided) {
+    const wrongs = g.st.steps.map((s, i) => i).filter(i => i !== g.idx);
+    const pick = wrongs[Math.floor(Math.random() * wrongs.length)];
+    pool = shuffle([g.idx, pick]);
+  } else {
+    pool = g.remaining.slice();
+    if (g.d.distractors) pool = pool.concat(g.st.distractors.map((x, i) => "d" + i));
+    pool = shuffle(pool);
+  }
+  const box = $("choices"); box.innerHTML = "";
+  pool.forEach(id => {
+    const isD = typeof id === "string";
+    const item = isD ? g.st.distractors[parseInt(id.slice(1), 10)] : g.st.steps[id];
+    const c = document.createElement("button");
+    c.className = "choice" + (g.d.hints && !isD && id === g.idx ? " hint" : "");
+    c.innerHTML = '<span class="em">' + item.em + "</span><span>" + item.tx + "</span>";
+    c.onclick = () => pickOrder(c, id, isD);
+    box.appendChild(c);
+  });
+}
+function pickOrder(card, id, isD) {
+  if (!isD && id === g.idx) {
+    sndStar();
+    card.classList.add("good");
+    g.stars++;
+    $("stars-game").textContent = arNum(g.stars);
+    $("praise").textContent = PRAISES[Math.floor(Math.random() * PRAISES.length)];
+    g.remaining = g.remaining.filter(x => x !== g.idx);
+    g.idx++;
+    setTimeout(nextOrderRound, 750);
+  } else {
+    sndBad();
+    card.classList.add("bad");
+    $("praise").textContent = isD ? "دي مش من خطوات اللعبة دي 😄" : GENTLE[Math.floor(Math.random() * GENTLE.length)];
+    setTimeout(() => card.classList.remove("bad"), 500);
+  }
+}
+
+/* ============ محرك لعبة الأدب ============ */
+function startManners() {
+  const d = DIFF[state.age];
+  const count = d.guided ? 4 : MANNERS.length;
+  g = null;
+  m = { d, qs: shuffle(MANNERS).slice(0, count), i: 0, stars: 0 };
+  $("stars-game").textContent = "٠";
+  show("scr-game");
+  renderMannerRound();
+}
+function renderMannerRound() {
+  if (m.i >= m.qs.length) return finishStage("manners", m.stars);
+  const q = m.qs[m.i];
+  renderDots(m.qs.length, m.i);
+  $("praise").textContent = "";
+  $("prompt").innerHTML = '<span class="em">💬</span>' + q.q;
+  const opts = shuffle(q.a.slice(0, m.d.mannerOptions));
+  const box = $("choices"); box.innerHTML = "";
+  opts.forEach(txt => {
+    const c = document.createElement("button");
+    c.className = "choice";
+    c.innerHTML = '<span style="font-size:1.25rem">' + txt + "</span>";
+    c.onclick = () => {
+      if (txt === q.a[0]) {
+        sndStar(); c.classList.add("good");
+        m.stars++; $("stars-game").textContent = arNum(m.stars);
+        $("praise").textContent = PRAISES[Math.floor(Math.random() * PRAISES.length)];
+        m.i++; setTimeout(renderMannerRound, 900);
+      } else {
+        sndBad(); c.classList.add("bad");
+        $("praise").textContent = GENTLE[Math.floor(Math.random() * GENTLE.length)];
+        setTimeout(() => c.classList.remove("bad"), 500);
+      }
+    };
+    box.appendChild(c);
+  });
+}
+
+/* ============ نهاية المرحلة ============ */
+function finishStage(key, earned) {
+  state.stars[key] = Math.max(state.stars[key] || 0, earned);
+  state.done[key] = true;
+  save();
+  sndWin(); confetti();
+  $("done-stars").textContent = "⭐".repeat(Math.min(earned, 12));
+  $("done-text").textContent = STAGES[key].done + " — خدت " + arNum(earned) + " نجمة!";
+  g = null; m = null;
+  show("scr-done");
+}
+
+/* ============ ربط الأزرار ============ */
+document.querySelectorAll("[data-age]").forEach(b => {
+  b.onclick = () => { sndTap(); state.age = b.dataset.age; save(); renderMap(); show("scr-map"); };
+});
+$("btn-home").onclick = () => { sndTap(); show("scr-home"); };
+$("btn-back").onclick = () => { sndTap(); g = null; m = null; renderMap(); show("scr-map"); };
+$("btn-next-map").onclick = () => { sndTap(); renderMap(); show("scr-map"); };
+$("btn-sound").onclick = function () {
+  state.sound = !state.sound; save();
+  this.textContent = state.sound ? "🔊" : "🔇";
+  if (state.sound) sndTap();
+};
+$("btn-final").onclick = () => {
+  sndWin(); confetti(120);
+  $("final-stars").textContent = "⭐".repeat(Math.min(totalStars(), 15));
+  show("scr-final");
+};
+$("btn-again").onclick = () => {
+  sndTap(); state.stars = {}; state.done = {}; save(); renderMap(); show("scr-map");
+};
+
+/* ============ بداية ============ */
+$("btn-sound").textContent = state.sound ? "🔊" : "🔇";
+if (state.age) { renderMap(); show("scr-map"); }
+</script>
+</body>
+</html>
