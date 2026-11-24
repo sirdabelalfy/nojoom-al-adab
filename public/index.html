@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>نجوم الآداب ⭐ لعبة الأطفال</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#9775fa">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="نجوم الآداب">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <style>
   :root{
     --bg1:#ffe8f0; --bg2:#e0f4ff; --card:#ffffff; --ink:#3a2e5c;
@@ -453,6 +460,11 @@ $("btn-final").onclick = () => {
 $("btn-again").onclick = () => {
   sndTap(); state.stars = {}; state.done = {}; save(); renderMap(); show("scr-map");
 };
+
+/* ============ تسجيل الـ Service Worker ============ */
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => { navigator.serviceWorker.register("sw.js").catch(() => {}); });
+}
 
 /* ============ بداية ============ */
 $("btn-sound").textContent = state.sound ? "🔊" : "🔇";
