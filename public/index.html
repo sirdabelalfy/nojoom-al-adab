@@ -426,8 +426,9 @@ function finishStage(key, earned) {
   state.done[key] = true;
   save();
   sndWin(); confetti();
-  $("done-stars").textContent = "⭐".repeat(Math.min(earned, 12));
-  $("done-text").textContent = STAGES[key].done + " — خدت " + arNum(earned) + " نجمة!";
+  $("done-stars").textContent = "⭐".repeat(Math.min(earned, 8));
+  const starWord = earned === 1 ? "نجمة" : earned === 2 ? "نجمتين" : "نجوم";
+  $("done-text").textContent = STAGES[key].done + " — خدت " + arNum(earned) + " " + starWord + "!";
   g = null; m = null;
   show("scr-done");
 }
@@ -446,7 +447,7 @@ $("btn-sound").onclick = function () {
 };
 $("btn-final").onclick = () => {
   sndWin(); confetti(120);
-  $("final-stars").textContent = "⭐".repeat(Math.min(totalStars(), 15));
+  $("final-stars").textContent = "⭐".repeat(Math.min(totalStars(), 7));
   show("scr-final");
 };
 $("btn-again").onclick = () => {
